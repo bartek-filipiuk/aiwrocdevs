@@ -1,0 +1,152 @@
+---
+import type { AgendaItem } from '../lib/supabase';
+
+interface Props {
+  items: AgendaItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section id="agenda" class="section agenda-section">
+  <div class="container">
+    <h2 class="section-title">Event <span class="gradient-text">Agenda</span></h2>
+    <p class="section-subtitle">Join us for an exciting day of AI and technology discussions</p>
+
+    <div class="agenda-timeline">
+      {items.map((item, index) => (
+        <div class="agenda-item fade-in-up" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="time-badge">{item.time}</div>
+          <div class="agenda-content">
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .agenda-section {
+    background-color: var(--bg-primary);
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 4rem;
+  }
+
+  .agenda-timeline {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .agenda-timeline::before {
+    content: '';
+    position: absolute;
+    left: 140px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  }
+
+  .agenda-item {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    opacity: 0;
+  }
+
+  .agenda-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .time-badge {
+    flex-shrink: 0;
+    width: 120px;
+    padding: 0.75rem 1.25rem;
+    background: var(--accent-gradient);
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    height: fit-content;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+  }
+
+  .agenda-content {
+    flex: 1;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .agenda-content::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    border: 3px solid var(--bg-primary);
+  }
+
+  .agenda-content:hover {
+    border-color: var(--accent-primary);
+    transform: translateX(8px);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  }
+
+  .agenda-content h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+  }
+
+  .agenda-content p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .agenda-timeline::before {
+      left: 20px;
+    }
+
+    .agenda-item {
+      flex-direction: column;
+      gap: 1rem;
+      padding-left: 2.5rem;
+    }
+
+    .time-badge {
+      width: auto;
+      display: inline-block;
+    }
+
+    .agenda-content::before {
+      left: -36px;
+    }
+
+    .agenda-content:hover {
+      transform: translateX(0);
+    }
+  }
+</style>

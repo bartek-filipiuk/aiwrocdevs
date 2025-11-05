@@ -1,0 +1,135 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Banner from '../components/Banner.astro';
+import Agenda from '../components/Agenda.astro';
+import LocationInfo from '../components/LocationInfo.astro';
+import AdditionalInfo from '../components/AdditionalInfo.astro';
+import { supabase } from '../lib/supabase';
+import type { MeetupDetails } from '../lib/supabase';
+
+// Fetch meetup details from Supabase
+let meetupData: MeetupDetails | null = null;
+let error: string | null = null;
+
+try {
+  const { data, error: fetchError } = await supabase
+    .from('meetup_details')
+    .select('*')
+    .single();
+
+  if (fetchError) {
+    error = fetchError.message;
+    console.error('Error fetching meetup data:', fetchError);
+  } else {
+    meetupData = data as MeetupDetails;
+  }
+} catch (e) {
+  error = 'Failed to connect to database';
+  console.error('Error:', e);
+}
+
+// Default/placeholder data if database fetch fails
+const defaultData: MeetupDetails = {
+  id: 1,
+  title: 'AI WrocDevs Meetup',
+  date: '2025-11-27',
+  location: 'Wrocław, Poland',
+  description: 'Join us for an exciting meetup focused on Artificial Intelligence, Machine Learning, and the future of technology in Wrocław.',
+  agenda: [
+    {
+      time: '09:00',
+      title: 'Registration & Coffee',
+      description: 'Welcome to AI WrocDevs! Grab a coffee and network with fellow attendees.'
+    },
+    {
+      time: '10:00',
+      title: 'Opening Keynote',
+      description: 'Introduction to the latest trends in AI and what to expect from the day.'
+    },
+    {
+      time: '11:00',
+      title: 'AI in Production',
+      description: 'Learn how to deploy and scale AI models in real-world applications.'
+    },
+    {
+      time: '12:30',
+      title: 'Lunch Break',
+      description: 'Networking lunch with refreshments provided.'
+    },
+    {
+      time: '14:00',
+      title: 'Panel Discussion',
+      description: 'Industry experts discuss the future of AI and its impact on society.'
+    },
+    {
+      time: '15:30',
+      title: 'Workshops',
+      description: 'Hands-on sessions on machine learning tools and techniques.'
+    },
+    {
+      time: '17:00',
+      title: 'Closing & Networking',
+      description: 'Final thoughts and open networking session.'
+    }
+  ],
+  additional_info: 'This meetup is perfect for developers, data scientists, AI enthusiasts, and anyone interested in learning about artificial intelligence and its applications.\n\nWhat to bring: Laptop for workshops (optional), enthusiasm for learning, and business cards for networking.\n\nFree refreshments and snacks will be provided throughout the day.',
+  signup_link: 'https://forms.google.com/your-form-link',
+  updated_at: new Date().toISOString()
+};
+
+const data = meetupData || defaultData;
+---
+
+<Layout title="AI WrocDevs - AI & Technology Meetup in Wrocław">
+  <Header />
+
+  <main>
+    {error && (
+      <div class="error-banner">
+        <div class="container">
+          <p>⚠️ Using placeholder data. Database connection: {error}</p>
+        </div>
+      </div>
+    )}
+
+    <Banner
+      title={data.title}
+      date={data.date}
+      location={data.location}
+      description={data.description}
+    />
+
+    <Agenda items={data.agenda} />
+
+    <LocationInfo location={data.location} />
+
+    <AdditionalInfo
+      content={data.additional_info}
+      signupLink={data.signup_link}
+    />
+  </main>
+</Layout>
+
+<style>
+  main {
+    min-height: 100vh;
+  }
+
+  .error-banner {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 1rem 0;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
+
+  .error-banner p {
+    color: #fca5a5;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+</style>

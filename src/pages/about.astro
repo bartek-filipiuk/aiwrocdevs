@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+---
+
+<Layout title="About Us - AI WrocDevs">
+  <Header />
+
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <h1>About <span class="gradient-text">AI WrocDevs</span></h1>
+        <p class="subtitle">Building Wrocław's AI & Technology Community</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="content-wrapper">
+          <div class="card content-card">
+            <h2>Our Mission</h2>
+            <p>
+              AI WrocDevs is a vibrant community of developers, data scientists, researchers, and AI enthusiasts
+              based in Wrocław, Poland. We're dedicated to fostering knowledge sharing, collaboration, and innovation
+              in the field of artificial intelligence and machine learning.
+            </p>
+          </div>
+
+          <div class="card content-card">
+            <h2>What We Do</h2>
+            <p>
+              We organize regular meetups, workshops, and networking events that bring together professionals
+              and enthusiasts from various backgrounds. Our events feature:
+            </p>
+            <ul>
+              <li>Technical talks and presentations from industry experts</li>
+              <li>Hands-on workshops and coding sessions</li>
+              <li>Panel discussions on AI trends and ethics</li>
+              <li>Networking opportunities with like-minded individuals</li>
+              <li>Collaboration on real-world AI projects</li>
+            </ul>
+          </div>
+
+          <div class="card content-card">
+            <h2>Who Should Join</h2>
+            <p>
+              Whether you're a seasoned AI professional or just starting your journey in machine learning,
+              you're welcome here! Our community includes:
+            </p>
+            <ul>
+              <li>Software developers and engineers</li>
+              <li>Data scientists and analysts</li>
+              <li>ML/AI researchers and academics</li>
+              <li>Product managers and tech leaders</li>
+              <li>Students and career changers</li>
+              <li>Anyone curious about AI and its applications</li>
+            </ul>
+          </div>
+
+          <div class="card content-card">
+            <h2>Get Involved</h2>
+            <p>
+              Join our community and be part of Wrocław's growing AI ecosystem. Whether you want to attend events,
+              speak at a meetup, or contribute to community projects, we'd love to have you!
+            </p>
+            <p>
+              Stay connected with us through our meetups and follow our latest updates to never miss an event.
+            </p>
+          </div>
+
+          <div class="cta-section">
+            <a href="/" class="btn btn-primary">View Upcoming Events</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    min-height: 100vh;
+    padding-top: 80px;
+  }
+
+  .page-header {
+    background:
+      linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%),
+      var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 5rem 0;
+    text-align: center;
+  }
+
+  .page-header h1 {
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+  }
+
+  .content-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .content-card {
+    margin-bottom: 2rem;
+  }
+
+  .content-card h2 {
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+  }
+
+  .content-card p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .content-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1.5rem;
+  }
+
+  .content-card li {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.75rem;
+  }
+
+  .content-card li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-primary);
+    font-weight: bold;
+  }
+
+  .cta-section {
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-header {
+      padding: 3rem 0;
+    }
+  }
+</style>

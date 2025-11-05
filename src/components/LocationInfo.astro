@@ -1,0 +1,156 @@
+---
+interface Props {
+  location: string;
+}
+
+const { location } = Astro.props;
+---
+
+<section class="section location-section">
+  <div class="container">
+    <div class="location-grid">
+      <div class="location-content">
+        <h2>Event <span class="gradient-text">Location</span></h2>
+        <div class="location-details">
+          <div class="detail-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <div>
+              <h4>Address</h4>
+              <p>{location}</p>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <div>
+              <h4>Duration</h4>
+              <p>Full day event with networking</p>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <div>
+              <h4>Venue</h4>
+              <p>Modern tech hub with facilities</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-placeholder">
+        <div class="map-overlay">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <p>Map placeholder</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .location-section {
+    background-color: var(--bg-secondary);
+  }
+
+  .location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .location-content h2 {
+    margin-bottom: 2rem;
+  }
+
+  .location-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .detail-card {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .detail-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  }
+
+  .detail-card svg {
+    color: var(--accent-primary);
+    flex-shrink: 0;
+  }
+
+  .detail-card h4 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .detail-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .map-placeholder {
+    height: 500px;
+    background:
+      linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%),
+      var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .map-overlay {
+    text-align: center;
+    color: var(--text-secondary);
+  }
+
+  .map-overlay svg {
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .map-overlay p {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 968px) {
+    .location-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .map-placeholder {
+      height: 400px;
+    }
+  }
+</style>
