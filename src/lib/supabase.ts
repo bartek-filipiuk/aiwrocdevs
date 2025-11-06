@@ -26,3 +26,29 @@ export interface AgendaItem {
   title: string;
   description: string;
 }
+
+export interface PageSection {
+  type: string;
+  content: string;
+}
+
+export interface Page {
+  id: string;
+  title: string;
+  slug: string;
+  sections: PageSection[];
+  meta_description: string | null;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MenuItem {
+  id: string;
+  label: string;
+  url: string;
+  display_order: number;
+  is_visible: boolean;
+  created_at: string;
+  updated_at: string;
+}
