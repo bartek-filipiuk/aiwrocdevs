@@ -416,16 +416,16 @@ if (!page) {
   let sectionCount = 0;
 
   // Get page data from data attribute
-  const form = document.getElementById('page-form');
+  const form = document.getElementById('page-form') as HTMLFormElement | null;
   const pageDataStr = form?.getAttribute('data-page-data');
   const pageData = pageDataStr ? JSON.parse(pageDataStr) : null;
 
   // Slug preview update
-  const slugInput = document.getElementById('slug');
+  const slugInput = document.getElementById('slug') as HTMLInputElement | null;
   const slugPreview = document.getElementById('slug-preview');
 
   slugInput?.addEventListener('input', () => {
-    if (slugPreview) slugPreview.textContent = slugInput.value || 'your-page';
+    if (slugPreview && slugInput) slugPreview.textContent = slugInput.value || 'your-page';
   });
 
   // Add section
@@ -459,8 +459,8 @@ if (!page) {
   function attachRemoveListeners() {
     document.querySelectorAll('.remove-section-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const target = e.currentTarget;
-        const item = target.closest('.section-item');
+        const target = e.currentTarget as HTMLButtonElement;
+        const item = target?.closest('.section-item');
         if (document.querySelectorAll('.section-item').length > 1) {
           item?.remove();
           renumberSections();
@@ -487,7 +487,7 @@ if (!page) {
 
   // Load existing sections
   if (pageData && pageData.sections && Array.isArray(pageData.sections)) {
-    pageData.sections.forEach(section => {
+    pageData.sections.forEach((section: { type?: string; content?: string }) => {
       addSection(section.content || '');
     });
   }
@@ -504,24 +504,26 @@ if (!page) {
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    if (!form) return;
+
     const formData = new FormData(form);
-    const btnText = form.querySelector('.btn-text');
-    const btnLoading = form.querySelector('.btn-loading');
-    const submitBtn = form.querySelector('button[type="submit"]');
+    const btnText = form.querySelector('.btn-text') as HTMLElement | null;
+    const btnLoading = form.querySelector('.btn-loading') as HTMLElement | null;
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
 
     // Show loading state
-    btnText.style.display = 'none';
-    btnLoading.style.display = 'flex';
-    submitBtn.disabled = true;
+    if (btnText) btnText.style.display = 'none';
+    if (btnLoading) btnLoading.style.display = 'flex';
+    if (submitBtn) submitBtn.disabled = true;
     successMessage?.classList.remove('show');
     errorMessage?.classList.remove('show');
 
     // Collect sections
-    const sections = [];
+    const sections: Array<{ type: string; content: string }> = [];
     const sectionElements = document.querySelectorAll('.section-item');
 
     sectionElements.forEach((item) => {
-      const textarea = item.querySelector(`textarea[name="section_${item.getAttribute('data-index')}"]`);
+      const textarea = item.querySelector(`textarea[name="section_${item.getAttribute('data-index')}"]`) as HTMLTextAreaElement | null;
       if (textarea && textarea.value.trim()) {
         sections.push({
           type: 'section',
@@ -531,9 +533,9 @@ if (!page) {
     });
 
     const updateData = {
-      title: formData.get('title'),
-      slug: formData.get('slug'),
-      meta_description: formData.get('meta_description') || null,
+      title: formData.get('title') as string,
+      slug: formData.get('slug') as string,
+      meta_description: formData.get('meta_description') as string || null,
       is_published: formData.get('is_published') === 'on',
       sections: sections,
       updated_at: new Date().toISOString()
@@ -554,16 +556,17 @@ if (!page) {
         successMessage?.classList.remove('show');
       }, 3000);
 
-    } catch (error) {
+    } catch (err) {
       if (errorMessage) {
+        const error = err as { message?: string };
         errorMessage.textContent = error.message || 'Failed to update page';
         errorMessage.classList.add('show');
       }
     } finally {
       // Reset button state
-      btnText.style.display = 'block';
-      btnLoading.style.display = 'none';
-      submitBtn.disabled = false;
+      if (btnText) btnText.style.display = 'block';
+      if (btnLoading) btnLoading.style.display = 'none';
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 </script>
