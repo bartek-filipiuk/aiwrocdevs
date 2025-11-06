@@ -1,0 +1,569 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import { supabase } from '../../../../lib/supabase';
+import type { Page } from '../../../../lib/supabase';
+
+// Check authentication
+const sessionCookie = Astro.cookies.get('sb-access-token');
+if (!sessionCookie) {
+  return Astro.redirect('/admin/login');
+}
+
+// Get page ID from URL
+const { id } = Astro.params;
+
+// Fetch page data
+let page: Page | null = null;
+let error: string | null = null;
+
+try {
+  const { data, error: fetchError } = await supabase
+    .from('pages')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (fetchError) {
+    error = fetchError.message;
+  } else {
+    page = data as Page;
+  }
+} catch (e) {
+  error = 'Failed to load page';
+  console.error('Error:', e);
+}
+
+if (!page) {
+  return Astro.redirect('/admin/pages');
+}
+---
+
+<Layout title={`Edit ${page.title} - Admin`}>
+  <main class="dashboard-page">
+    <div class="dashboard-header">
+      <div class="container">
+        <div class="header-content">
+          <div>
+            <h1><span class="gradient-text">Edit Page</span></h1>
+            <p>Update page content and settings</p>
+          </div>
+          <div class="header-actions">
+            <a href="/admin/pages" class="btn btn-secondary">Back to Pages</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container editor-container">
+      <div id="success-message" class="success-message">
+        Page updated successfully!
+      </div>
+
+      <div id="error-message" class="error-message"></div>
+
+      {error && (
+        <div class="error-message show">
+          {error}
+        </div>
+      )}
+
+      <form id="page-form" class="page-form" data-page-id={page.id} data-page-data={JSON.stringify(page)}>
+        <div class="form-section">
+          <h2>Page Settings</h2>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="title">Page Title *</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                value={page.title}
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="slug">URL Slug *</label>
+              <input
+                type="text"
+                id="slug"
+                name="slug"
+                required
+                value={page.slug}
+                pattern="[a-z0-9-]+"
+                title="Only lowercase letters, numbers, and hyphens"
+              />
+              <p class="help-text">URL: /<span id="slug-preview">{page.slug}</span></p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="meta_description">Meta Description</label>
+            <textarea
+              id="meta_description"
+              name="meta_description"
+              rows="2"
+              placeholder="Brief description for SEO"
+            >{page.meta_description || ''}</textarea>
+            <p class="help-text">Recommended: 150-160 characters</p>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" id="is_published" name="is_published" checked={page.is_published} />
+              <span>Published</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-header">
+            <h2>Page Content</h2>
+            <button type="button" id="add-section-btn" class="btn btn-secondary btn-sm">
+              + Add Section
+            </button>
+          </div>
+
+          <div id="sections-container" class="sections-container">
+            <!-- Sections will be loaded here -->
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a href="/admin/pages" class="btn btn-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-text">Save Changes</span>
+            <span class="btn-loading" style="display: none;">
+              <svg class="spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Saving...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .dashboard-page {
+    min-height: 100vh;
+    background-color: var(--bg-primary);
+    padding-bottom: 4rem;
+  }
+
+  .dashboard-header {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .header-content p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .editor-container {
+    max-width: 900px;
+  }
+
+  .success-message,
+  .error-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    display: none;
+  }
+
+  .success-message {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+  }
+
+  .success-message.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+  }
+
+  .error-message.show {
+    display: block;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .page-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .form-section {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem;
+  }
+
+  .form-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    margin-bottom: 0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .help-text {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+  }
+
+  .sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .section-item {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .section-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .section-item-header h4 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+  }
+
+  .remove-section-btn {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .remove-section-btn:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+  }
+
+  .section-editor {
+    min-height: 200px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .btn-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .form-section {
+      padding: 1.5rem;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { supabase } from '../../../../lib/supabase';
+
+  let sectionCount = 0;
+
+  // Get page data from data attribute
+  const form = document.getElementById('page-form');
+  const pageDataStr = form?.getAttribute('data-page-data');
+  const pageData = pageDataStr ? JSON.parse(pageDataStr) : null;
+
+  // Slug preview update
+  const slugInput = document.getElementById('slug');
+  const slugPreview = document.getElementById('slug-preview');
+
+  slugInput?.addEventListener('input', () => {
+    if (slugPreview) slugPreview.textContent = slugInput.value || 'your-page';
+  });
+
+  // Add section
+  function addSection(content = '') {
+    const container = document.getElementById('sections-container');
+    const sectionDiv = document.createElement('div');
+    sectionDiv.className = 'section-item';
+    sectionDiv.dataset.index = sectionCount.toString();
+    sectionDiv.innerHTML = `
+      <div class="section-item-header">
+        <h4>Section ${sectionCount + 1}</h4>
+        <button type="button" class="remove-section-btn" data-index="${sectionCount}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="form-group">
+        <label>Content (HTML)</label>
+        <textarea name="section_${sectionCount}" class="section-editor" rows="8" placeholder="<h2>Section Title</h2>\n<p>Your content here...</p>">${content}</textarea>
+        <p class="help-text">You can use HTML tags: &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;img&gt;, etc.</p>
+      </div>
+    `;
+    container?.appendChild(sectionDiv);
+    sectionCount++;
+    attachRemoveListeners();
+  }
+
+  // Remove section
+  function attachRemoveListeners() {
+    document.querySelectorAll('.remove-section-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        const item = target.closest('.section-item');
+        if (document.querySelectorAll('.section-item').length > 1) {
+          item?.remove();
+          renumberSections();
+        } else {
+          alert('You must have at least one section.');
+        }
+      });
+    });
+  }
+
+  function renumberSections() {
+    const sections = document.querySelectorAll('.section-item');
+    sections.forEach((section, index) => {
+      const header = section.querySelector('.section-item-header h4');
+      if (header) {
+        header.textContent = `Section ${index + 1}`;
+      }
+    });
+  }
+
+  document.getElementById('add-section-btn')?.addEventListener('click', () => {
+    addSection();
+  });
+
+  // Load existing sections
+  if (pageData && pageData.sections && Array.isArray(pageData.sections)) {
+    pageData.sections.forEach(section => {
+      addSection(section.content || '');
+    });
+  }
+
+  // If no sections, add one empty section
+  if (sectionCount === 0) {
+    addSection();
+  }
+
+  // Form submission
+  const successMessage = document.getElementById('success-message');
+  const errorMessage = document.getElementById('error-message');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const btnText = form.querySelector('.btn-text');
+    const btnLoading = form.querySelector('.btn-loading');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    // Show loading state
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'flex';
+    submitBtn.disabled = true;
+    successMessage?.classList.remove('show');
+    errorMessage?.classList.remove('show');
+
+    // Collect sections
+    const sections = [];
+    const sectionElements = document.querySelectorAll('.section-item');
+
+    sectionElements.forEach((item) => {
+      const textarea = item.querySelector(`textarea[name="section_${item.getAttribute('data-index')}"]`);
+      if (textarea && textarea.value.trim()) {
+        sections.push({
+          type: 'section',
+          content: textarea.value.trim()
+        });
+      }
+    });
+
+    const updateData = {
+      title: formData.get('title'),
+      slug: formData.get('slug'),
+      meta_description: formData.get('meta_description') || null,
+      is_published: formData.get('is_published') === 'on',
+      sections: sections,
+      updated_at: new Date().toISOString()
+    };
+
+    try {
+      const pageId = form.dataset.pageId;
+      const { error } = await supabase
+        .from('pages')
+        .update(updateData)
+        .eq('id', pageId);
+
+      if (error) throw error;
+
+      successMessage?.classList.add('show');
+
+      setTimeout(() => {
+        successMessage?.classList.remove('show');
+      }, 3000);
+
+    } catch (error) {
+      if (errorMessage) {
+        errorMessage.textContent = error.message || 'Failed to update page';
+        errorMessage.classList.add('show');
+      }
+    } finally {
+      // Reset button state
+      btnText.style.display = 'block';
+      btnLoading.style.display = 'none';
+      submitBtn.disabled = false;
+    }
+  });
+</script>
