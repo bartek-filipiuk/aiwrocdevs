@@ -19,6 +19,28 @@ export interface MeetupDetails {
   additional_info: string;
   signup_link: string;
   updated_at: string;
+
+  // Event Location section (3 detail cards)
+  location_detail_1_title: string;
+  location_detail_1_description: string;
+  location_detail_2_title: string;
+  location_detail_2_description: string;
+  location_detail_3_title: string;
+  location_detail_3_description: string;
+  map_embed_code: string;
+
+  // What to Expect section (3 feature cards)
+  expect_feature_1_title: string;
+  expect_feature_1_description: string;
+  expect_feature_2_title: string;
+  expect_feature_2_description: string;
+  expect_feature_3_title: string;
+  expect_feature_3_description: string;
+
+  // Ready to Join section
+  join_heading: string;
+  join_subtitle: string;
+  join_button_text: string;
 }
 
 export interface AgendaItem {

@@ -2,9 +2,30 @@
 interface Props {
   content: string;
   signupLink: string;
+  expectFeature1Title: string;
+  expectFeature1Description: string;
+  expectFeature2Title: string;
+  expectFeature2Description: string;
+  expectFeature3Title: string;
+  expectFeature3Description: string;
+  joinHeading: string;
+  joinSubtitle: string;
+  joinButtonText: string;
 }
 
-const { content, signupLink } = Astro.props;
+const {
+  content,
+  signupLink,
+  expectFeature1Title,
+  expectFeature1Description,
+  expectFeature2Title,
+  expectFeature2Description,
+  expectFeature3Title,
+  expectFeature3Description,
+  joinHeading,
+  joinSubtitle,
+  joinButtonText
+} = Astro.props;
 ---
 
 <section class="section info-section">
@@ -25,8 +46,8 @@ const { content, signupLink } = Astro.props;
               <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
           </div>
-          <h3>Networking</h3>
-          <p>Connect with AI enthusiasts and tech professionals</p>
+          <h3>{expectFeature1Title}</h3>
+          <p>{expectFeature1Description}</p>
         </div>
 
         <div class="feature-card">
@@ -37,8 +58,8 @@ const { content, signupLink } = Astro.props;
               <polyline points="2 12 12 17 22 12"></polyline>
             </svg>
           </div>
-          <h3>Learn</h3>
-          <p>Discover latest AI trends and technologies</p>
+          <h3>{expectFeature2Title}</h3>
+          <p>{expectFeature2Description}</p>
         </div>
 
         <div class="feature-card">
@@ -48,8 +69,8 @@ const { content, signupLink } = Astro.props;
               <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
             </svg>
           </div>
-          <h3>Share</h3>
-          <p>Exchange ideas and experiences</p>
+          <h3>{expectFeature3Title}</h3>
+          <p>{expectFeature3Description}</p>
         </div>
       </div>
     </div>
@@ -59,10 +80,10 @@ const { content, signupLink } = Astro.props;
 <section id="signup" class="section signup-section">
   <div class="container">
     <div class="signup-card">
-      <h2>Ready to Join?</h2>
-      <p>Secure your spot at our next meetup. Limited seats available!</p>
+      <h2>{joinHeading}</h2>
+      <p>{joinSubtitle}</p>
       <a href={signupLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
-        Register Now
+        {joinButtonText}
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="5" y1="12" x2="19" y2="12"></line>
           <polyline points="12 5 19 12 12 19"></polyline>

@@ -75,6 +75,29 @@ const defaultData: MeetupDetails = {
   ],
   additional_info: 'This meetup is perfect for developers, data scientists, AI enthusiasts, and anyone interested in learning about artificial intelligence and its applications.\n\nWhat to bring: Laptop for workshops (optional), enthusiasm for learning, and business cards for networking.\n\nFree refreshments and snacks will be provided throughout the day.',
   signup_link: 'https://forms.google.com/your-form-link',
+
+  // Event Location details
+  location_detail_1_title: 'Address',
+  location_detail_1_description: 'Wrocław, Poland',
+  location_detail_2_title: 'Duration',
+  location_detail_2_description: 'Full day event with networking',
+  location_detail_3_title: 'Venue',
+  location_detail_3_description: 'Modern tech hub with facilities',
+  map_embed_code: '',
+
+  // What to Expect features
+  expect_feature_1_title: 'Networking',
+  expect_feature_1_description: 'Connect with AI enthusiasts and tech professionals',
+  expect_feature_2_title: 'Learn',
+  expect_feature_2_description: 'Discover latest AI trends and technologies',
+  expect_feature_3_title: 'Share',
+  expect_feature_3_description: 'Exchange ideas and experiences',
+
+  // Ready to Join section
+  join_heading: 'Ready to Join?',
+  join_subtitle: 'Secure your spot at our next meetup. Limited seats available!',
+  join_button_text: 'Register Now',
+
   updated_at: new Date().toISOString()
 };
 
@@ -102,11 +125,28 @@ const data = meetupData || defaultData;
 
     <Agenda items={data.agenda} />
 
-    <LocationInfo location={data.location} />
+    <LocationInfo
+      locationDetail1Title={data.location_detail_1_title}
+      locationDetail1Description={data.location_detail_1_description}
+      locationDetail2Title={data.location_detail_2_title}
+      locationDetail2Description={data.location_detail_2_description}
+      locationDetail3Title={data.location_detail_3_title}
+      locationDetail3Description={data.location_detail_3_description}
+      mapEmbedCode={data.map_embed_code}
+    />
 
     <AdditionalInfo
       content={data.additional_info}
       signupLink={data.signup_link}
+      expectFeature1Title={data.expect_feature_1_title}
+      expectFeature1Description={data.expect_feature_1_description}
+      expectFeature2Title={data.expect_feature_2_title}
+      expectFeature2Description={data.expect_feature_2_description}
+      expectFeature3Title={data.expect_feature_3_title}
+      expectFeature3Description={data.expect_feature_3_description}
+      joinHeading={data.join_heading}
+      joinSubtitle={data.join_subtitle}
+      joinButtonText={data.join_button_text}
     />
   </main>
 </Layout>

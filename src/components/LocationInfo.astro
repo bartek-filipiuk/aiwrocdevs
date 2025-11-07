@@ -1,9 +1,23 @@
 ---
 interface Props {
-  location: string;
+  locationDetail1Title: string;
+  locationDetail1Description: string;
+  locationDetail2Title: string;
+  locationDetail2Description: string;
+  locationDetail3Title: string;
+  locationDetail3Description: string;
+  mapEmbedCode?: string;
 }
 
-const { location } = Astro.props;
+const {
+  locationDetail1Title,
+  locationDetail1Description,
+  locationDetail2Title,
+  locationDetail2Description,
+  locationDetail3Title,
+  locationDetail3Description,
+  mapEmbedCode
+} = Astro.props;
 ---
 
 <section class="section location-section">
@@ -18,8 +32,8 @@ const { location } = Astro.props;
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
             <div>
-              <h4>Address</h4>
-              <p>{location}</p>
+              <h4>{locationDetail1Title}</h4>
+              <p>{locationDetail1Description}</p>
             </div>
           </div>
 
@@ -29,8 +43,8 @@ const { location } = Astro.props;
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
             <div>
-              <h4>Duration</h4>
-              <p>Full day event with networking</p>
+              <h4>{locationDetail2Title}</h4>
+              <p>{locationDetail2Description}</p>
             </div>
           </div>
 
@@ -40,21 +54,27 @@ const { location } = Astro.props;
               <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
             <div>
-              <h4>Venue</h4>
-              <p>Modern tech hub with facilities</p>
+              <h4>{locationDetail3Title}</h4>
+              <p>{locationDetail3Description}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="map-placeholder">
-        <div class="map-overlay">
-          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-          <p>Map placeholder</p>
-        </div>
+      <div class="map-container">
+        {mapEmbedCode ? (
+          <div set:html={mapEmbedCode} class="map-embed"></div>
+        ) : (
+          <div class="map-placeholder">
+            <div class="map-overlay">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <p>Map placeholder</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   </div>
@@ -112,6 +132,23 @@ const { location } = Astro.props;
   .detail-card p {
     color: var(--text-secondary);
     font-size: 0.95rem;
+  }
+
+  .map-container {
+    height: 500px;
+  }
+
+  .map-embed {
+    height: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .map-embed :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 1rem;
   }
 
   .map-placeholder {
