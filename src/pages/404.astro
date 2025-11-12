@@ -1,0 +1,97 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+
+// Set 404 status
+Astro.response.status = 404;
+---
+
+<Layout title="404 - Page Not Found" description="The page you're looking for doesn't exist.">
+  <Header />
+
+  <main class="error-page">
+    <div class="container">
+      <div class="error-content">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Page Not Found</h2>
+        <p class="error-description">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        <a href="/" class="btn-primary">Go to Homepage</a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    padding-top: 80px;
+    background:
+      linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%),
+      var(--bg-primary);
+  }
+
+  .error-content {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .error-title {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .error-description {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 5rem;
+    }
+
+    .error-title {
+      font-size: 1.5rem;
+    }
+
+    .error-description {
+      font-size: 1rem;
+    }
+  }
+</style>
