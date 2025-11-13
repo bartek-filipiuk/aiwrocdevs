@@ -2,6 +2,8 @@
 interface Props {
   content: string;
   signupLink: string;
+  expectTitlePart1: string;
+  expectTitlePart2: string;
   expectFeature1Title: string;
   expectFeature1Description: string;
   expectFeature2Title: string;
@@ -16,6 +18,8 @@ interface Props {
 const {
   content,
   signupLink,
+  expectTitlePart1,
+  expectTitlePart2,
   expectFeature1Title,
   expectFeature1Description,
   expectFeature2Title,
@@ -31,7 +35,7 @@ const {
 <section class="section info-section">
   <div class="container">
     <div class="info-content">
-      <h2>What to <span class="gradient-text">Expect</span></h2>
+      <h2>{expectTitlePart1} <span class="gradient-text">{expectTitlePart2}</span></h2>
       <div class="info-text">
         {content.split('\n').map(paragraph => paragraph.trim() && <p>{paragraph}</p>)}
       </div>

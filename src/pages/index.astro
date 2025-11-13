@@ -76,6 +76,10 @@ const defaultData: MeetupDetails = {
   additional_info: 'This meetup is perfect for developers, data scientists, AI enthusiasts, and anyone interested in learning about artificial intelligence and its applications.\n\nWhat to bring: Laptop for workshops (optional), enthusiasm for learning, and business cards for networking.\n\nFree refreshments and snacks will be provided throughout the day.',
   signup_link: 'https://forms.google.com/your-form-link',
 
+  // Agenda section titles
+  agenda_title_part1: 'Event',
+  agenda_title_part2: 'Agenda',
+
   // Event Location details
   location_detail_1_title: 'Address',
   location_detail_1_description: 'Wrocław, Poland',
@@ -84,6 +88,10 @@ const defaultData: MeetupDetails = {
   location_detail_3_title: 'Venue',
   location_detail_3_description: 'Modern tech hub with facilities',
   map_embed_code: '',
+
+  // What to Expect section titles
+  expect_title_part1: 'What to',
+  expect_title_part2: 'Expect',
 
   // What to Expect features
   expect_feature_1_title: 'Networking',
@@ -123,7 +131,11 @@ const data = meetupData || defaultData;
       description={data.description}
     />
 
-    <Agenda items={data.agenda} />
+    <Agenda
+      items={data.agenda}
+      titlePart1={data.agenda_title_part1}
+      titlePart2={data.agenda_title_part2}
+    />
 
     <LocationInfo
       locationDetail1Title={data.location_detail_1_title}
@@ -138,6 +150,8 @@ const data = meetupData || defaultData;
     <AdditionalInfo
       content={data.additional_info}
       signupLink={data.signup_link}
+      expectTitlePart1={data.expect_title_part1}
+      expectTitlePart2={data.expect_title_part2}
       expectFeature1Title={data.expect_feature_1_title}
       expectFeature1Description={data.expect_feature_1_description}
       expectFeature2Title={data.expect_feature_2_title}

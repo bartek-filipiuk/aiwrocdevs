@@ -3,15 +3,16 @@ import type { AgendaItem } from '../lib/supabase';
 
 interface Props {
   items: AgendaItem[];
+  titlePart1: string;
+  titlePart2: string;
 }
 
-const { items } = Astro.props;
+const { items, titlePart1, titlePart2 } = Astro.props;
 ---
 
 <section id="agenda" class="section agenda-section">
   <div class="container">
-    <h2 class="section-title">Event <span class="gradient-text">Agenda</span></h2>
-    <p class="section-subtitle">Join us for an exciting day of AI and technology discussions</p>
+    <h2 class="section-title">{titlePart1} <span class="gradient-text">{titlePart2}</span></h2>
 
     <div class="agenda-timeline">
       {items.map((item, index) => (
@@ -34,13 +35,6 @@ const { items } = Astro.props;
 
   .section-title {
     text-align: center;
-    margin-bottom: 1rem;
-  }
-
-  .section-subtitle {
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: 1.1rem;
     margin-bottom: 4rem;
   }
 

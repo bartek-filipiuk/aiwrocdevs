@@ -20,6 +20,10 @@ export interface MeetupDetails {
   signup_link: string;
   updated_at: string;
 
+  // Agenda section titles
+  agenda_title_part1: string;
+  agenda_title_part2: string;
+
   // Event Location section (3 detail cards)
   location_detail_1_title: string;
   location_detail_1_description: string;
@@ -28,6 +32,10 @@ export interface MeetupDetails {
   location_detail_3_title: string;
   location_detail_3_description: string;
   map_embed_code: string;
+
+  // What to Expect section titles
+  expect_title_part1: string;
+  expect_title_part2: string;
 
   // What to Expect section (3 feature cards)
   expect_feature_1_title: string;

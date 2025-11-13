@@ -171,6 +171,36 @@ const data = meetupData || defaultData;
         </div>
 
         <div class="form-section">
+          <h2>Agenda Section</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="agenda_title_part1">Agenda Title (Part 1)</label>
+              <input
+                type="text"
+                id="agenda_title_part1"
+                name="agenda_title_part1"
+                required
+                value={data.agenda_title_part1}
+                placeholder="Event"
+              />
+              <p class="help-text">First part of the title (normal text)</p>
+            </div>
+            <div class="form-group">
+              <label for="agenda_title_part2">Agenda Title (Part 2)</label>
+              <input
+                type="text"
+                id="agenda_title_part2"
+                name="agenda_title_part2"
+                required
+                value={data.agenda_title_part2}
+                placeholder="Agenda"
+              />
+              <p class="help-text">Second part with gradient effect</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
           <div class="section-header">
             <h2>Agenda Items</h2>
             <button type="button" id="add-agenda-btn" class="btn btn-secondary btn-sm">
@@ -336,7 +366,35 @@ const data = meetupData || defaultData;
         </div>
 
         <div class="form-section">
-          <h2>What to Expect Features</h2>
+          <h2>What to Expect Section</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expect_title_part1">Section Title (Part 1)</label>
+              <input
+                type="text"
+                id="expect_title_part1"
+                name="expect_title_part1"
+                required
+                value={data.expect_title_part1}
+                placeholder="What to"
+              />
+              <p class="help-text">First part of the title (normal text)</p>
+            </div>
+            <div class="form-group">
+              <label for="expect_title_part2">Section Title (Part 2)</label>
+              <input
+                type="text"
+                id="expect_title_part2"
+                name="expect_title_part2"
+                required
+                value={data.expect_title_part2}
+                placeholder="Expect"
+              />
+              <p class="help-text">Second part with gradient effect</p>
+            </div>
+          </div>
+
+          <h3 style="margin-top: 2rem;">Feature Cards</h3>
           <p class="section-description">Three feature cards displayed on the homepage (icons are fixed)</p>
 
           <div class="detail-card-group">
@@ -918,6 +976,10 @@ const data = meetupData || defaultData;
       additional_info: formData.get('additional_info') as string,
       agenda: agendaItems,
 
+      // Agenda section titles
+      agenda_title_part1: formData.get('agenda_title_part1') as string,
+      agenda_title_part2: formData.get('agenda_title_part2') as string,
+
       // Event Location details
       location_detail_1_title: formData.get('location_detail_1_title') as string,
       location_detail_1_description: formData.get('location_detail_1_description') as string,
@@ -926,6 +988,10 @@ const data = meetupData || defaultData;
       location_detail_3_title: formData.get('location_detail_3_title') as string,
       location_detail_3_description: formData.get('location_detail_3_description') as string,
       map_embed_code: formData.get('map_embed_code') as string,
+
+      // What to Expect section titles
+      expect_title_part1: formData.get('expect_title_part1') as string,
+      expect_title_part2: formData.get('expect_title_part2') as string,
 
       // What to Expect features
       expect_feature_1_title: formData.get('expect_feature_1_title') as string,
