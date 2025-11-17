@@ -1,0 +1,92 @@
+---
+import type { Partner } from '../lib/supabase';
+
+interface Props {
+  title: string;
+  partners: Partner[];
+}
+
+const { title, partners = [] } = Astro.props;
+---
+
+<section id="partners" class="section partners-section">
+  <div class="container">
+    <h2 class="section-title"><span class="gradient-text">{title}</span></h2>
+
+    {partners.length > 0 && (
+      <div class="partners-grid">
+        {partners.map((partner, index) => (
+        <div class="partner-item fade-in-up" style={`animation-delay: ${index * 0.1}s`}>
+          {partner.link ? (
+            <a href={partner.link} target="_blank" rel="noopener noreferrer" class="partner-link">
+              <img src={partner.logo} alt="Partner logo" class="partner-logo" />
+            </a>
+          ) : (
+            <img src={partner.logo} alt="Partner logo" class="partner-logo" />
+          )}
+        </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .partners-section {
+    background-color: var(--bg-secondary);
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .partners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .partner-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+  }
+
+  .partner-link {
+    display: block;
+    width: 200px;
+    height: 200px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .partner-link:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+
+  .partner-logo {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .partners-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 150px));
+      gap: 2rem;
+    }
+
+    .partner-link,
+    .partner-logo {
+      width: 150px;
+      height: 150px;
+    }
+  }
+</style>

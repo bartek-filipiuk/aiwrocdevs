@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Banner from '../components/Banner.astro';
 import Agenda from '../components/Agenda.astro';
+import Partners from '../components/Partners.astro';
 import LocationInfo from '../components/LocationInfo.astro';
 import AdditionalInfo from '../components/AdditionalInfo.astro';
 import { supabase } from '../lib/supabase';
@@ -80,6 +81,13 @@ const defaultData: MeetupDetails = {
   agenda_title_part1: 'Event',
   agenda_title_part2: 'Agenda',
 
+  // Partners section
+  partners_title: 'Our Partners',
+  partners: [
+    { logo: '/logos/inqube.png', link: '' },
+    { logo: '/logos/brave.png', link: '' }
+  ],
+
   // Event Location details
   location_detail_1_title: 'Address',
   location_detail_1_description: 'Wrocław, Poland',
@@ -135,6 +143,11 @@ const data = meetupData || defaultData;
       items={data.agenda}
       titlePart1={data.agenda_title_part1}
       titlePart2={data.agenda_title_part2}
+    />
+
+    <Partners
+      title={data.partners_title}
+      partners={data.partners}
     />
 
     <LocationInfo

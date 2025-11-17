@@ -24,6 +24,10 @@ export interface MeetupDetails {
   agenda_title_part1: string;
   agenda_title_part2: string;
 
+  // Partners section
+  partners_title: string;
+  partners: Partner[];
+
   // Event Location section (3 detail cards)
   location_detail_1_title: string;
   location_detail_1_description: string;
@@ -55,6 +59,11 @@ export interface AgendaItem {
   time: string;
   title: string;
   description: string;
+}
+
+export interface Partner {
+  logo: string;
+  link: string;
 }
 
 export interface PageSection {
