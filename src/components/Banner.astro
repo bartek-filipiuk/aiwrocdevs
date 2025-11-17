@@ -14,7 +14,7 @@ const { title, date, location, description } = Astro.props;
 const formatDate = (dateStr: string) => {
   try {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('pl-PL', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -58,8 +58,8 @@ const formatDate = (dateStr: string) => {
       </div>
 
       <div class="cta-buttons">
-        <a href="#signup" class="btn btn-primary">Register Now</a>
-        <a href="#agenda" class="btn btn-secondary">View Agenda</a>
+        <a href="#signup" class="btn btn-primary">Zapisz się</a>
+        <a href="#agenda" class="btn btn-secondary">Program</a>
       </div>
     </div>
   </div>
